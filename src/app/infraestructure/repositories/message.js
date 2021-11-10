@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const model = require('../../domain/models/message');
 const Message = mongoose.model('Message', model);
+const ioService = require('../../domain/services/io');
 
 module.exports = {
 
@@ -16,7 +17,9 @@ module.exports = {
       if (err) {
         res.sendStatus(500);
       }
-       
+      
+      const io = new ioService();
+      io.emit('message', req.body);    
       res.status(200).send(message);
     })
   }
